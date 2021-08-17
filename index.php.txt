@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Ebay Item Specifics Search</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Description" lang="en" content="Ebay Item Specifics Search">
+		<meta name="author" content="Craig M. Rosenblum">
+		<meta name="robots" content="index, follow">
+
+		<!-- icons -->
+		<link rel="shortcut icon" href="images/favicon.ico">
+
+		<!-- Override CSS file - add your own CSS rules -->
+		<link rel="stylesheet" href="css/styles.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h1 class="header-heading"><img src="images/logo.png" alt="Ebay Item Specifics Search" style="float: left;height:50px;width:50px;" border=0/>Ebay Item Specifics Search</h1>
+			</div>
+			<div class="content">
+				<div class="main">
+					<!--- main content --->
+					<br/>
+					<div class="wrap">
+					   <div class="search">
+						  <form>
+						  <input type="text" id="_nkw" class="searchTerm" placeholder="Enter Brand Manufacturer & Model #?">
+						  <input type="hidden" id="LH_ItemCondition" value="1000">
+						  <input type="hidden" id="country" value="US">
+						  <input type="hidden" id="_sacat" value="0">
+						  <input type="hidden" id="LH_PrefLoc" value="1">
+						  <input type="hidden" id="LH_Complete" value="1">
+						  <input type="hidden" id="_sop" value="16">
+						  <!---
+						  <select id="condition">
+						  <option value="1000">New</option>
+						  <option value="1500">New Other</option>
+						  <option value="1750">New with Defects</option>
+						  <option value="2000">Certified Refurbished</option>
+						  <option value="2500">Seller Refurbished</option>
+						  <option value="2750">Like New</option>
+						  <option value="3000">Used</option>
+						  <option value="4000">Very Good</option>
+						  <option value="5000">Good</option>
+						  <option value="6000">Acceptable</option>
+						  <option value="7000">For Parts</option>
+						  </select>
+						  --->
+						  <button type="submit" class="searchButton">
+							<i class="fa fa-search"></i>
+						 </button>
+						 </form>
+					   </div>
+					</div>
+					<br/>
+					<div id="description">
+					<p>This tool is to help you find listings with the most item specifics for the product you are researching.</p>
+					</div>
+					<br/>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+	$(function () {
+		$('form').on('submit', function (e) {
+			e.preventDefault();
+			$.ajax({
+            type: 'post',
+            url: 'ajax_process.php',
+            data: $('form').serialize(),
+            success: function () {
+              alert('form was submitted');
+            }
+          });
+		});
+	});
+	</script>
+</html>

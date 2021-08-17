@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+	<meta charset="utf-8">
+	<title>Ebay Item Specifics Search</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Description" lang="en" content="Ebay Item Specifics Search">
+	<meta name="author" content="Craig M. Rosenblum">
+	<meta name="robots" content="index, follow">
+
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<style type="text/css">
+		body{
+			margin-top:20px;
+		}
+		.shadow-textarea {
+			padding: 15px;
+			margin-bottom: 20px;
+			border-radius: 4px;
+			width: 66.66666666666666%;
+			display: block;
+			margin: 0 auto;
+		}
+		.shadow-textarea textarea.form-control::placeholder {
+			font-weight: 300;
+			color: white;
+		}
+		.shadow-textarea textarea.form-control {
+			padding-left: 0.8rem;
+			background-color: #b3c5e3;
+		}		
+		.results-textarea {
+			padding: 15px;
+			margin-bottom: 20px;
+			border-radius: 4px;
+			width: 66.66666666666666%;
+			display: block;
+			margin: 0 auto;
+		}
+		.results-textarea textarea.form-control::placeholder {
+			font-weight: 300;
+			color: white;
+		}
+		.results-textarea textarea.form-control {
+			padding-left: 0.8rem;
+			background-color: #a5f0d3;
+		}		
+
+	</style>
+	
+    <script type="text/javascript">
+        window.alert = function(){};
+        var defaultCSS = document.getElementById('bootstrap-css');
+        function changeCSS(css){
+            if(css) $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="'+ css +'" type="text/css" />'); 
+            else $('head > link').filter(':first').replaceWith(defaultCSS); 
+        }
+    </script>
+	
+	<!------ Include the above in your HEAD tag ---------->
+
+	<body>
+
+	<div class="container">
+		<div class="row">    
+			<div class="col-xs-8 col-xs-offset-2">
+				<div class="input-group">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+					</span>
+					<input type="text" class="form-control" id="url" name="url" placeholder="https://">
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<div id="errorshere" class="alert alert-danger"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group results-textarea">
+			  <label for="resultshere">Results Will Show up Here</label>
+			  <textarea class="form-control z-depth-1" id="resultshere" cols="5" rows="3" placeholder="Ebay Listing Html will show here..."></textarea>
+			</div>		
+		</div>
+		<div class="row">
+			<div class="form-group shadow-textarea">
+			  <label for="htmlhere">HTML Display</label>
+			  <textarea class="form-control z-depth-1" id="htmlhere" cols="5" rows="3" placeholder="Ebay Listing Html will show here..."></textarea>
+			</div>		
+		</div>		
+	</div>
+
+	<script>
+		$(document).ready(function(){
+		
+			// hide the following divs
+			// $('#errorshere').show();
+			// $('#resultshere').show();
+			// $('#htmlhere').show();
+			
+
+			function isUrl(s) {
+				var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+				return regexp.test(s);
+			}
+
+			$('.btn-default').bind("click",function(e){
+				// your statements;
+				e.preventDefault();
+
+				// step 0 grab input value
+				var url = $('.form-control').val();
+				console.log(url);
+
+				// step 1 check if valid url
+				var validurl = isUrl(url);
+				console.log(validurl);
+				if (validurl == false) {
+				
+					// add to error message-box
+					$('#errorshere').html('Invalid url!');
+				
+					// change url paramter back to default value
+					$('.form-control').val('https://');
+					
+				}
+				
+				// step 2. change url
+				var url = url.substring(0,37);
+				// now change the form field value
+				$('.url').val(url);
+				
+				// step 3. do ajax to get html from url
+				$.ajax({
+					url: "ajax_get_html.php",
+					type: "post",
+					data: url ,
+					success: function (response) {
+					   // You will get response from your PHP page (what you echo or print)
+					   // $("textarea#htmlhere").val(response);
+					   alert(response.message);
+					   console.log('success');
+					   console.log(response);
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+					   console.log('failure');
+					   console.log(textStatus, errorThrown);
+					}
+				});
+
+				
+				
+			});
+
+		});	
+	</script>
+
+
+	</body>
+</html>
